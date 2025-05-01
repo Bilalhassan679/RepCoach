@@ -1,31 +1,5 @@
 import {Platform, PixelRatio} from 'react-native';
 
-// const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get('window');
-// const STANDARD_WIDTH = 375; // iPhone X/11 Pro/12 Mini
-// const STANDARD_HEIGHT = 812;
-
-// export const scale = (size: number) => {
-//   const widthRatio = SCREEN_WIDTH / STANDARD_WIDTH;
-//   const heightRatio = SCREEN_HEIGHT / STANDARD_HEIGHT;
-//   const ratio = Math.min(widthRatio, heightRatio);
-
-//   // Different scale factors for different screen sizes
-//   let factor = 1;
-//   if (SCREEN_WIDTH <= 320) {
-//     // iPhone SE 1st gen
-//     factor = 0.85;
-//   } else if (SCREEN_WIDTH < 375) {
-//     // Smaller phones
-//     factor = 0.9;
-//   } else if (SCREEN_WIDTH >= 414) {
-//     // iPhone Plus/Pro Max models, larger Android
-//     factor = 1.1;
-//   }
-
-//   const newSize = size * ratio * factor;
-//   return Math.round(PixelRatio.roundToNearestPixel(newSize));
-// };
-
 const fontScale = PixelRatio.getFontScale();
 
 export const scale = (size: number) => size / fontScale;
@@ -33,33 +7,37 @@ export const scale = (size: number) => size / fontScale;
 export const typography = {
   // Font Families
   fontFamily: {
-    interLight: Platform.select({
-      ios: 'Inter-Light',
-      android: 'Inter-Light',
+    WorkSansLight: Platform.select({
+      ios: 'WorkSans-Light',
+      android: 'WorkSans-Light',
     }),
-    interMedium: Platform.select({
-      ios: 'Inter-Medium',
-      android: 'Inter-Medium',
+    WorkSansMedium: Platform.select({
+      ios: 'WorkSans-Medium',
+      android: 'WorkSans-Medium',
     }),
-    interRegular: Platform.select({
-      ios: 'Inter-Regular',
-      android: 'Inter-Regular',
+    WorkSansRegular: Platform.select({
+      ios: 'WorkSans-Regular',
+      android: 'WorkSans-Regular',
     }),
-    interSemiBold: Platform.select({
-      ios: 'Inter-SemiBold',
-      android: 'Inter-SemiBold',
+    WorkSansSemiBold: Platform.select({
+      ios: 'WorkSans-SemiBold',
+      android: 'WorkSans-SemiBold',
     }),
-    interBold: Platform.select({
-      ios: 'Inter-Bold',
-      android: 'Inter-Bold',
+    WorkSansBold: Platform.select({
+      ios: 'WorkSans-Bold',
+      android: 'WorkSans-Bold',
     }),
-    apolloRegular: Platform.select({
-      ios: 'APOLLO-Regular',
-      android: 'APOLLO-Regular',
+    WorkSansExtraBold: Platform.select({
+      ios: 'WorkSans-ExtraBold',
+      android: 'WorkSans-ExtraBold',
     }),
-    againstRegular: Platform.select({
-      ios: 'Against-Regular',
-      android: 'Against-Regular',
+    WorkSansExtraLight: Platform.select({
+      ios: 'WorkSans-ExtraLight',
+      android: 'WorkSans-ExtraLight',
+    }),
+    WorkSansThin: Platform.select({
+      ios: 'WorkSans-Thin',
+      android: 'WorkSans-Thin',
     }),
   },
 

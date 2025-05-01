@@ -10,50 +10,42 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import RootNavigator from './src/navigation/RootNavigator';
 import { AuthProvider } from './src/context/AuthContext';
 import { ImageBackground, StyleSheet } from 'react-native';
-import { Splash } from './src/assets';
-
+import { splash } from './src/assets';
+import { NavigationContainer } from '@react-navigation/native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 function App(): React.JSX.Element {
-
+  const [splashVisible, setSplashVisible] = useState(true);
   
-  const [splashVisible,setSplashVisible]=useState(true);
-  
-  setTimeout(()=>{
+  setTimeout(() => {
     setSplashVisible(false)
-  },2000)
-  let Splash_Screen = (
+  }, 2000)
 
-
+  const Splash_Screen = (
     <ImageBackground
-      source={Splash}
+      source={splash}
       resizeMode="cover"
-      style={styles.splash}></ImageBackground>
+      style={styles.splash}
+    />
   );
 
   return (
-    <SafeAreaProvider>
-
-    {
-      splashVisible?Splash_Screen:
-    
-      <AuthProvider>
-        <RootNavigator />
-      </AuthProvider>
-    }
-    </SafeAreaProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <NavigationContainer>
+          <AuthProvider>
+            {splashVisible ? Splash_Screen : <RootNavigator />}
+          </AuthProvider>
+        </NavigationContainer>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
   );
 }
 
-export default App; 
-
-
 const styles = StyleSheet.create({
-  splash:{
-      justifyContent: 'center',
-      flex: 1,
-      position: 'absolute',
-      width: '100%',
-      height: '100%',
-      backgroundColor: 'white',
-  }
-})
+  splash: {
+    flex: 1,
+  },
+});
+
+export default App;

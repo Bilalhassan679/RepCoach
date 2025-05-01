@@ -1,11 +1,8 @@
 import React, {JSX} from 'react';
-import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import BottomTabNavigator from './BottomTabNavigator';
-import AuthNavigator from './AuthNavigator';
 import {useAuth} from '../context/AuthContext';
 import {
-  Image,
   ImageBackground,
   Platform,
   StyleSheet,
@@ -14,10 +11,10 @@ import {
   View,
 } from 'react-native';
 import HomeScreen from '../screens/HomeScreen';
-import {arrowleft, edit, headerBg} from '../assets';
+import {headerBg} from '../assets';
 import {typography} from '../theme/typography';
 import {scale} from '../theme/typography';
-import {hp, wp} from '../theme/responsive';
+import {hp} from '../theme/responsive';
 import ProfileScreen from '../screens/ProfileScreen';
 import MyOrdersScreen from '../screens/MyOrders';
 import ViewOrdersScreen from '../screens/ViewOrders';
@@ -25,6 +22,22 @@ import MyInvoicesScreen from '../screens/MyInvoices';
 import ProductDetail from '../screens/ProductDetail';
 import NewArrival from '../screens/NewArrival';
 import { RootStackParamList } from './types';
+import InformationGatheringScreen from '../screens/assessment/InformationGatheringScreen';
+import GymTypeScreen from '../screens/assessment/GymTypeScreen';
+import GymEquipmentScreen from '../screens/assessment/GymEquipmentScreen';
+import EmploymentTypeScreen from '../screens/assessment/EmploymentTypeScreen';
+import WorkoutDurationScreen from '../screens/assessment/WorkoutDurationScreen';
+import ExerciseFrequencyScreen from '../screens/assessment/ExerciseFrequencyScreen';
+import AuthNavigator from './AuthNavigator';
+import TailoredSolutionScreen from '../screens/assessment/TailoredSolutionScreen';
+import SubscriptionStarScreen from '../screens/assessment/SubscriptionStarScreen';
+import ConfirmationScreen from '../screens/assessment/ConfirmationScreen';
+import DataReview from '../screens/assessment/DataReview';
+import DataReview2 from '../screens/assessment/DataReview2';
+import DataReview3 from '../screens/assessment/DataReview3';
+import HeartRateAssessmentScreen from '../screens/assessment/HeartRateAssessmentScreen';
+import LiftingAssessmentScreen from '../screens/assessment/LiftingAssessmentScreen';
+import PhysicalAssessmentScreen from '../screens/assessment/PhysicalAssessmentScreen';  
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -57,58 +70,95 @@ export const CustomHeader = ({
 };
 
 const RootNavigator = () => {
-  const {isAuthenticated} = useAuth();
+  const {isAuthenticated, isAssessmentCompleted} = useAuth();
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-        }}>
-        {isAuthenticated ? (
-          // Auth Stack
-          <Stack.Screen name="Auth" component={AuthNavigator} />
-        ) : (
-          <Stack.Group>
-            {/* Main App Stack */}
-            <Stack.Screen name="MainApp" component={BottomTabNavigator} />
-            <Stack.Screen name="Home" component={HomeScreen} />
-            <Stack.Screen
-              name="Profile"
-              component={ProfileScreen}
-              options={{
-                headerShown: false,
-              }}
-            />
-            <Stack.Screen
-              name="MyOrders"
-              component={MyOrdersScreen}
-              options={{
-                headerShown: false,
-              }}
-            />
-            <Stack.Screen
-              name="ViewOrders"
-              component={ViewOrdersScreen}
-              options={{
-                headerShown: false,
-              }}
-            />
-            <Stack.Screen
-              name="MyInvoices"
-              component={MyInvoicesScreen}
-              options={{
-                headerShown: false,
-              }}
-            />
-            <Stack.Screen name="ProductDetail" component={ProductDetail} />
-            <Stack.Screen name="NewArrival" component={NewArrival} />
-          </Stack.Group>
-        )}
-
-    
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}>
+      {!isAuthenticated ? (
+        // Auth Stack
+        <Stack.Screen name="Auth" component={AuthNavigator} />
+      ) : !isAssessmentCompleted ? (
+        // Assessment Flow
+        <Stack.Group>
+          <Stack.Screen 
+            name="PhysicalAssessment" 
+            component={PhysicalAssessmentScreen} 
+          />
+          <Stack.Screen 
+            name="HeartRateAssessment" 
+            component={HeartRateAssessmentScreen} 
+          />
+          <Stack.Screen 
+            name="LiftingAssessment" 
+            component={LiftingAssessmentScreen} 
+          />
+          <Stack.Screen 
+            name="DataReview" 
+            component={DataReview} 
+          />
+          <Stack.Screen 
+            name="DataReview2" 
+            component={DataReview2} 
+          />
+          <Stack.Screen 
+            name="DataReview3" 
+            component={DataReview3} 
+          />
+          <Stack.Screen 
+            name="Confirmation" 
+            component={ConfirmationScreen} 
+          />
+          <Stack.Screen 
+            name="SubscriptionStar" 
+            component={SubscriptionStarScreen} 
+          />
+          <Stack.Screen 
+            name="TailoredSolution" 
+            component={TailoredSolutionScreen} 
+          />
+          <Stack.Screen 
+            name="InformationGathering" 
+            component={InformationGatheringScreen} 
+          />
+          <Stack.Screen 
+            name="GymType" 
+            component={GymTypeScreen} 
+          />
+          <Stack.Screen 
+            name="GymEquipment" 
+            component={GymEquipmentScreen} 
+          />
+          <Stack.Screen 
+            name="EmploymentType" 
+            component={EmploymentTypeScreen} 
+          />
+          <Stack.Screen 
+            name="WorkoutDuration" 
+            component={WorkoutDurationScreen} 
+          />
+          <Stack.Screen 
+            name="ExerciseFrequency" 
+            component={ExerciseFrequencyScreen} 
+          />
+      
+        </Stack.Group>
+      ) : (
+        // Main App Stack
+        <Stack.Group>
+          <Stack.Screen name="MainApp" component={BottomTabNavigator} />
+          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="Profile" component={ProfileScreen} />
+          <Stack.Screen name="MyOrders" component={MyOrdersScreen} />
+          <Stack.Screen name="ViewOrders" component={ViewOrdersScreen} />
+          <Stack.Screen name="MyInvoices" component={MyInvoicesScreen} />
+          <Stack.Screen name="ProductDetail" component={ProductDetail} />
+          <Stack.Screen name="NewArrival" component={NewArrival} />
+        </Stack.Group>
+      )}
+    </Stack.Navigator>
   );
 };
 
@@ -125,8 +175,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     color: '#fff',
     fontSize: scale(25),
-    fontFamily: typography.fontFamily.apolloRegular,
-    
+    fontFamily: typography.fontFamily.WorkSansRegular,
   },
   headerContent: {
     width: '100%',
@@ -135,17 +184,16 @@ const styles = StyleSheet.create({
   leftButton: {
     position: 'absolute',
     left: 0,
-    top:0,
+    top: 0,
     zIndex: 1000,
     borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
   },
-
   rightButton: {
     position: 'absolute',
     right: 0,
-    top:0,
-      zIndex: 1000,
+    top: 0,
+    zIndex: 1000,
   },
 });

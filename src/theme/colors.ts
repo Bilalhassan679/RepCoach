@@ -1,9 +1,9 @@
 export const colors = {
   // Primary Colors
   primary: {
-    main: '#F79B00',
-    light: '#47A1FF',
-    dark: '#0055B3',
+    main: 'rgba(239, 0, 0, 1)',
+    light: '#E0F2FE',
+    dark: '#0250C5',
     contrast: '#FFFFFF',
   },
 
@@ -19,15 +19,15 @@ export const colors = {
   neutral: {
     white: '#FFFFFF',
     black: '#000000',
-    grey100: '#F5F5F5',
-    grey200: '#EEEEEE',
-    grey300: '#E0E0E0',
-    grey400: '#BDBDBD',
-    grey500: '#9E9E9E',
-    grey600: '#757575',
-    grey700: '#616161',
-    grey800: '#424242',
-    grey900: '#212121',
+    grey100: '#F3F4F6',
+    grey200: '#E5E7EB',
+    grey300: '#D1D5DB',
+    grey400: '#9CA3AF',
+    grey500: '#6B7280',
+    grey600: '#4B5563',
+    grey700: '#374151',
+    grey800: '#1F2937',
+    grey900: '#111827',
   },
 
   // Status Colors
@@ -47,14 +47,11 @@ export const colors = {
   },
 
   // Text Colors
-  text: {
-    primary: '#000000',
-    secondary: '#909090',
-    disabled: '#9E9E9E',
-    hint: '#9E9E9E',
-    inverse: '#FFFFFF',
-    danger: '#FF3B30',
-  },
+  text: 'rgba(17, 18, 20, 1)',
+  disabled: '#9E9E9E',
+  hint: '#9E9E9E',
+  inverse: '#FFFFFF',
+  danger: '#FF3B30',
 
   // Border Colors
   border: {

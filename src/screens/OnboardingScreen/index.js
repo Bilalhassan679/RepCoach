@@ -5,11 +5,14 @@ import {
   ImageBackground,
   TouchableOpacity,
   Text,
+  Image,
 } from 'react-native';
 import useOnboardingScreen from './useOnboarding';
 import {styles} from './style';
 import {wp, hp} from '../../theme/responsive';
 import {TextComponent} from '../components/TextComponent';
+import {onboardingleft, onboardingright} from '../../assets';
+import CacheImage from '../../components/CacheImage';
 
 export default function OnboardingScreen({navigation}) {
   const {
@@ -17,10 +20,8 @@ export default function OnboardingScreen({navigation}) {
     currentIndex,
     onSnapToItem,
     flatListRef,
-    handleNext,
-    handleLogin,
     handleNextWithComplete,
-    handleLoginWithComplete,
+    handlePrevWithComplete,
   } = useOnboardingScreen(navigation);
 
   const renderItem = useCallback(
@@ -32,25 +33,12 @@ export default function OnboardingScreen({navigation}) {
           style={styles.bgImage}
           key={index}>
           <View style={styles.centerMainView}>
-            <Text style={styles.centerText}>
-              {item.title}
-              {currentIndex === 0 && (
-                <TextComponent
-                  numberOfLines={2}
-                  text={'\nFine Gold Jewelry\n'}
-                  styles={styles.subtitle}
-                />
-              )}
-
-              {currentIndex === 2 && (
-                <TextComponent
-                  numberOfLines={2}
-                  text={item?.subtitle1}
-                  styles={styles.subtitle1}
-                />
-              )}
-              {currentIndex === 0 && 'Since 2001.'}
-            </Text>
+            <Text style={styles.centerText}>{item.title}</Text>
+            <TextComponent
+              numberOfLines={2}
+              text={item?.subtitle}
+              styles={styles.subtitle}
+            />
           </View>
         </ImageBackground>
       );
@@ -71,30 +59,26 @@ export default function OnboardingScreen({navigation}) {
       />
 
       <View style={styles.bottomContainer}>
-        {currentIndex !== onboardingData.length - 1 && (
+        {/* {currentIndex !== onboardingData.length - 1 && (
           <View style={styles.dotList}>
             {onboardingData.map((_, index) => (
               <View key={index} style={styles.dot(currentIndex, index)} />
             ))}
           </View>
-        )}
-        {currentIndex === onboardingData.length - 1 && (
+        )} */}
+
+        <View style={styles.arrowContainer}>
           <TouchableOpacity
-            style={styles.loginBtn}
-            onPress={handleLoginWithComplete}>
-            <TextComponent text={'Login'} styles={styles.arrowText} />
+            style={styles.btnArrow}
+            onPress={handlePrevWithComplete}>
+            <Image source={onboardingleft} style={styles.arrow} />
           </TouchableOpacity>
-        )}
-        <TouchableOpacity
-          style={styles.btnArrow}
-          onPress={handleNextWithComplete}>
-          <TextComponent
-            text={
-              currentIndex === onboardingData.length - 1 ? 'Sign Up' : 'Next'
-            }
-            styles={styles.arrowText}
-          />
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.btnArrow}
+            onPress={handleNextWithComplete}>
+            <Image source={onboardingright} style={styles.arrow} />
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );

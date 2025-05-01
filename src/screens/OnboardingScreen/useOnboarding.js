@@ -1,8 +1,8 @@
-import {useEffect, useRef, useState} from 'react';
+import {useCallback, useEffect, useRef, useState} from 'react';
 
 import {Dimensions} from 'react-native';
 import {isIOS} from '../../theme/responsive';
-import {Onboarding, Onboarding1, Onboarding2} from '../../assets';
+import {onboarding1, onboarding2, onboarding3} from '../../assets';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const useOnboardingScreen = navigation => {
@@ -35,6 +35,15 @@ const useOnboardingScreen = navigation => {
     }
   };
 
+  const handlePrev = () => {
+    if (!isIOS) {
+      setCurrentIndex(prev => prev - 1);
+      flatListRef.current.scrollToIndex({index: currentIndex - 1});
+    } else {
+      flatListRef.current.scrollToIndex({index: currentIndex - 1});
+    }
+  };
+
   const handleLogin = () => {
     navigation.navigate('Login');
   };
@@ -57,49 +66,41 @@ const useOnboardingScreen = navigation => {
   };
 
   // Mark onboarding as completed when user proceeds
-  const completeOnboarding = async () => {
-    try {
-      await AsyncStorage.setItem('hasSeenOnboarding', 'true');
-    } catch (error) {
-      console.log('Error saving onboarding status:', error);
-    }
-  };
 
   // Modified handleNextWithComplete to use the same safety check
   const handleNextWithComplete = () => {
     if (currentIndex === onboardingData.length - 1) {
-      completeOnboarding();
-      navigation.navigate('Register'); // or whatever your signup screen name is
+      navigation.navigate('Login'); // or whatever your signup screen name is
       return; // Exit early
     }
     handleNext();
   };
 
-  // Modified handleLogin to mark onboarding as completed
-  const handleLoginWithComplete = () => {
-    completeOnboarding();
-    handleLogin();
+  const handlePrevWithComplete = () => {
+    if (currentIndex === 0) {
+      navigation.navigate('Welcome'); // or whatever your signup screen name is
+      return; // Exit early
+    }
+    handlePrev();
   };
 
   const onboardingData = [
     {
       id: '1',
-      title: 'Welcome to Famous Gold Inc Your Trusted Partner',
-      subtitle: 'The Gold Jewelry\nSince 2023',
-      image: Onboarding,
+      title: 'Personalized Fitness Plans',
+      subtitle: 'Choose your own fitness journey with us.',
+      image: onboarding1,
     },
     {
       id: 0,
-      title: 'Jewelry You Can Trust, \n Quality You Deserve',
-      subtitle: 'Quality that Deserves',
-      image: Onboarding1,
+      title: 'Extensive Workout Library',
+      subtitle: 'Customized to your goals!',
+      image: onboarding2,
     },
     {
       id: '3',
-      title: 'Get Started',
-      subtitle: "We're the name of trusted and real jewelry",
-      subtitle1: '\nWanna be a part of famous gold society?',
-      image: Onboarding2,
+      title: 'Health Metrics &  Fitness Analytics',
+      image: onboarding3,
     },
   ];
 
@@ -111,7 +112,7 @@ const useOnboardingScreen = navigation => {
     handleNext,
     handleLogin,
     handleNextWithComplete,
-    handleLoginWithComplete,
+    handlePrevWithComplete,
   };
 };
 

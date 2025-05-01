@@ -201,12 +201,12 @@ const SettingsScreen = () => {
         ]}
       >
         <Text style={styles.sectionTitle}>Account</Text>
-        <SettingItem title="My profile" icon={home} onPress={() => navigation.navigate('Profile')} index={0} />
+        <SettingItem title="My profile" icon={home}  index={0} />
         <SettingItem title="Notifications" icon={setting} showToggle index={1} />
-        <SettingItem title="My orders" icon={explore} onPress={() => navigation.navigate('MyOrders')} index={2} />
-        <SettingItem title="My inquiries" icon={home} onPress={() => { navigation.navigate('ViewOrders') }} index={3} />
-        <SettingItem title="My invoices" icon={explore} onPress={() => navigation.navigate('MyInvoices')} index={4} />
-        <SettingItem title="Wishlist" icon={heart} onPress={() => { navigation.navigate('Wishlist') }} index={5} />
+        <SettingItem title="My orders" icon={explore} onPress={() => {}}index={2} />
+        <SettingItem title="My inquiries" icon={home} onPress={() => { }} index={3} />
+        <SettingItem title="My invoices" icon={explore} onPress={() => {}} index={4} />
+        <SettingItem title="Wishlist" icon={heart} onPress={() => {  }} index={5} />
       </Animated.View>
       <View style={styles.divider} />
       <Animated.View 

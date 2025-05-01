@@ -12,7 +12,7 @@ import {
   Platform,
   ScrollView,
 } from 'react-native';
-import { Splash, google,apple, eye, eyeoff, user, sms, lock } from '../../assets';
+import { splash, google,apple, eye, eyeoff, user, sms, lock,  eyeclose, logo } from '../../assets';
 import { wp, hp, isIOS } from '../../theme/responsive';
 import { colors } from '../../theme/colors';
 import { scale } from '../../theme/typography';
@@ -109,128 +109,144 @@ const RegisterScreen = ({ navigation }: any) => {
   );
 
   return (
-    <ImageBackground source={Splash} style={styles.container}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.container}
-      >
-        <ScrollView 
-          contentContainerStyle={styles.scrollContent}
-          showsVerticalScrollIndicator={false}
-          bounces={false}
-          >
-          <View style={styles.content}>
-            <Text style={styles.title}>Sign Up</Text>
-            
-            <View style={styles.whiteCard}>
-              <View style={styles.form}>
-                {renderInput('First Name', firstName, setFirstName, false, undefined, undefined, user)}
-                {renderInput('Last Name', lastName, setLastName, false, undefined, undefined, user)}
-                {renderInput('Email Address', email, setEmail, false, undefined, undefined, sms)}
-                {renderInput('Password', password, setPassword, true, showPassword, setShowPassword, lock)}
-                {renderInput('Confirm Password', confirmPassword, setConfirmPassword, true, showConfirmPassword, setShowConfirmPassword, lock)}
-                
-                {error ? <Text style={styles.errorText}>{error}</Text> : null}
+    <View style={styles.container}>
+      <View style={styles.content}>
+        <View style={styles.logoContainer}>
+          <Image
+            source={logo}
+            tintColor={colors.primary.main}
 
-                <TouchableOpacity 
-                  style={[styles.button, loading && styles.buttonDisabled]} 
-                  onPress={handleSignUp}
-                  disabled={loading}
-                >
-                  {loading ? (
-                    <ActivityIndicator color="#fff" />
-                  ) : (
-                    <Text style={styles.buttonText}>Sign Up</Text>
-                  )}
-                </TouchableOpacity>
+            style={styles.logo}
+          />
+          <Text style={styles.title}>Sign Up For Free</Text>
+          <Text style={styles.subtitle}>Let's personalize your fitness</Text>
+        </View>
 
-                <View style={styles.dividerContainer}>
-                  <View style={styles.divider} />
-                  <Text style={styles.orText}>Or Sign Up With</Text>
-                  <View style={styles.divider} />
-                </View>
-
-                <View style={styles.socialButtons}>
-                  <TouchableOpacity style={styles.socialButton}>
-                    <Image 
-                      source={google}
-                      style={styles.socialIcon}
-                    />
-                  </TouchableOpacity>
-                 {isIOS && <TouchableOpacity style={styles.socialButton}>
-                    <Image 
-                      source={apple}
-                      style={styles.socialIcon}
-                    />
-                  </TouchableOpacity>}
-                </View>
-
-                <TouchableOpacity
-                  style={styles.linkButton}
-                  onPress={() => navigation.navigate('Login')}
-                >
-                  <Text style={styles.linkText}>
-                    Already Have An Account? <Text style={styles.loginText}>Log In</Text>
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
+        <View style={styles.form}>
+          <Text style={styles.formTitle}>Email Address</Text>
+          <View style={styles.inputContainer}>
+            <Image source={sms} style={styles.inputIcon} />
+            <TextInput
+              style={styles.input}
+              placeholder="Email Address"
+              value={email}
+              onChangeText={setEmail}
+              autoCapitalize="none"
+              placeholderTextColor="#666"
+            />
           </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
-    </ImageBackground>
+
+          <Text style={styles.formTitle}>Password</Text>
+          <View style={styles.inputContainer}>
+            <Image source={lock} style={styles.inputIcon} />
+            <TextInput
+              style={styles.input}
+              placeholder="Password"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry={!showPassword}
+              placeholderTextColor="#666"
+            />
+            <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+              <Image source={!showPassword ? eye : eyeclose} style={styles.eyeIcon} />
+            </TouchableOpacity>
+          </View>
+
+          <Text style={styles.formTitle}>Confirm Password</Text>
+          <View style={styles.inputContainer}>
+            <Image source={lock} style={styles.inputIcon} />
+            <TextInput
+              style={styles.input}
+              placeholder="Confirm Password"
+              value={confirmPassword}
+              onChangeText={setConfirmPassword}
+              secureTextEntry={!showConfirmPassword}
+              placeholderTextColor="#666"
+            />
+            <TouchableOpacity onPress={() => setShowConfirmPassword(!showConfirmPassword)}>
+              <Image source={!showConfirmPassword ? eye : eyeclose} style={styles.eyeIcon} />
+            </TouchableOpacity>
+          </View>
+
+          <TouchableOpacity style={styles.signUpButton} onPress={handleSignUp}>
+            <Text style={styles.buttonText}>Sign Up</Text>
+          </TouchableOpacity>
+
+          <View style={styles.footer}>
+            <Text style={styles.footerText}>
+              Already have an account? {' '}
+              <Text style={styles.linkText} onPress={() => navigation.navigate('Login')}>
+                Sign In
+              </Text>
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#fff',
+
   },
   scrollContent: {
     flexGrow: 1,
   },
   content: {
     flex: 1,
+    padding: wp('5'),
   },
   title: {
-    fontSize: scale(32),
-    fontFamily: typography.fontFamily.apolloRegular,
-    color: colors.primary.main,
-    marginBottom: hp('2'),
-    marginTop: hp(isIOS ? '12' : '10'),
-    marginLeft: wp('2'),
+    fontSize: scale(24),
+    fontFamily: typography.fontFamily.WorkSansBold,
+    color: '#000',
+    marginTop: hp('2'),
   },
-  whiteCard: {
-    backgroundColor: '#fff',
-    borderTopLeftRadius: wp('8'),
-    borderTopRightRadius: wp('8'),
-    padding: wp('5'),
-    flex: 1,
+  subtitle: {
+    fontSize: scale(14),
+    color: '#666',
+    marginTop: hp('1'),
+    fontFamily: typography.fontFamily.WorkSansRegular,
   },
+  
   form: {
-    gap: hp('2'),
+    gap: hp('1'),
+  },
+  formTitle: {
+    fontSize: scale(14),
+    fontFamily: typography.fontFamily.WorkSansBold,
+    color: '#000',
+    marginTop: hp('2'),
+
   },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: '#E0E0E0',
+    backgroundColor: '#F5F5F5',
+    borderRadius: wp('2'),
+    paddingHorizontal: wp('4'),
     height: hp('7'),
   },
   input: {
     flex: 1,
+    marginLeft: wp('2'),
     color: '#000',
     fontSize: scale(16),
-    fontFamily: typography.fontFamily.interRegular,
-    marginLeft: wp('2'),
   },
   inputIcon: {
     width: wp('5'),
     height: wp('5'),
+    tintColor: '#666',
   },
   eyeIcon: {
-    padding: wp('2'),
+    width: wp('5'),
+    height: wp('5'),
+    tintColor: '#666',
   },
+  
   errorText: {
     color: colors.secondary.main,
     fontSize: scale(14),
@@ -248,7 +264,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#fff',
     fontSize: scale(16),
-    fontFamily: typography.fontFamily.interMedium,
+    fontFamily: typography.fontFamily.WorkSansMedium,
   },
   dividerContainer: {
     flexDirection: 'row',
@@ -264,7 +280,7 @@ const styles = StyleSheet.create({
     color: '#666',
     fontSize: scale(14),
     marginHorizontal: wp('3'),
-    fontFamily: typography.fontFamily.interRegular,
+    fontFamily: typography.fontFamily.WorkSansRegular,
   },
   socialButtons: {
     flexDirection: 'row',
@@ -294,14 +310,47 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   linkText: {
-    color: '#666',
-    fontSize: scale(14),
-    fontFamily: typography.fontFamily.interRegular,
+    color: '#FF0000',
+    fontFamily: typography.fontFamily.WorkSansMedium,
+    textDecorationLine: 'underline',
   },
   loginText: {
     color: '#F79B00',
-    fontFamily: typography.fontFamily.interMedium,
+    fontFamily: typography.fontFamily.WorkSansMedium,
   },
+  forgotText: {
+    color: '#F79B00',
+    fontFamily: typography.fontFamily.WorkSansMedium,
+  },
+  logoContainer: {
+    alignItems: 'center',
+    marginTop: hp('8'),
+    marginBottom: hp('4'),
+  },
+  logo: {
+    width: wp('20'),
+    height: wp('20'),
+    resizeMode: 'contain',
+  },
+  signUpButton: { 
+    backgroundColor: '#FF0000',
+    borderRadius: wp('2'),
+    height: hp('7'),
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: hp('2'),
+  },
+
+  footer: {
+    alignItems: 'center',
+    marginTop: hp('3'),
+  },
+  footerText: {
+    color: '#666',
+    fontSize: scale(14),
+    fontFamily: typography.fontFamily.WorkSansRegular,
+  },
+ 
 });
 
 export default RegisterScreen; 
