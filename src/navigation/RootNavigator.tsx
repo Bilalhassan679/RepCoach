@@ -38,6 +38,12 @@ import DataReview3 from '../screens/assessment/DataReview3';
 import HeartRateAssessmentScreen from '../screens/assessment/HeartRateAssessmentScreen';
 import LiftingAssessmentScreen from '../screens/assessment/LiftingAssessmentScreen';
 import PhysicalAssessmentScreen from '../screens/assessment/PhysicalAssessmentScreen';  
+import GoalsAndProgramInterestScreen from '../screens/assessment/GoalsAndProgramInterestScreen';
+import InjuryHistoryScreen from '../screens/assessment/InjuryHistoryScreen';
+import SurgeriesScreen from '../screens/assessment/SurgeriesScreen';
+import DiseasesHealthIssuesScreen from '../screens/assessment/DiseasesHealthIssuesScreen';
+import BodyFatLossGoalsScreen from '../screens/assessment/BodyFatLossGoalsScreen';
+import BodyWeightGoalsScreen from '../screens/assessment/BodyWeightGoalsScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -78,11 +84,39 @@ const RootNavigator = () => {
         headerShown: false,
       }}>
       {!isAuthenticated ? (
+           <Stack.Screen 
+           name="ExerciseFrequency" 
+           component={ExerciseFrequencyScreen} 
+         />
         // Auth Stack
-        <Stack.Screen name="Auth" component={AuthNavigator} />
+        // <Stack.Screen name="Auth" component={AuthNavigator} />
       ) : !isAssessmentCompleted ? (
         // Assessment Flow
         <Stack.Group>
+          <Stack.Screen 
+            name="GoalsAndProgramInterest" 
+            component={GoalsAndProgramInterestScreen} 
+          />
+          <Stack.Screen 
+            name="InjuryHistory" 
+            component={InjuryHistoryScreen} 
+          />
+          <Stack.Screen 
+            name="Surgeries" 
+            component={SurgeriesScreen} 
+          />
+          <Stack.Screen 
+            name="DiseasesHealthIssues" 
+            component={DiseasesHealthIssuesScreen} 
+          />
+          <Stack.Screen 
+            name="BodyFatLossGoals" 
+            component={BodyFatLossGoalsScreen} 
+          />
+          <Stack.Screen 
+            name="BodyWeightGoals" 
+            component={BodyWeightGoalsScreen} 
+          />
           <Stack.Screen 
             name="PhysicalAssessment" 
             component={PhysicalAssessmentScreen} 
@@ -135,14 +169,8 @@ const RootNavigator = () => {
             name="EmploymentType" 
             component={EmploymentTypeScreen} 
           />
-          <Stack.Screen 
-            name="WorkoutDuration" 
-            component={WorkoutDurationScreen} 
-          />
-          <Stack.Screen 
-            name="ExerciseFrequency" 
-            component={ExerciseFrequencyScreen} 
-          />
+         
+       
       
         </Stack.Group>
       ) : (

@@ -15,6 +15,7 @@ export {default as subscriptionbg} from './images/subscriptionbg.png';
 export {default as thumbs} from './images/thumbs.png';
 export {default as poststretchbg} from './images/poststretchbg.png';
 export {default as heartrate} from './images/heartrate.png';
+export {default as redline} from './images/redline.png';
 
 //LOGIN IMAGES
 export {default as bg} from './images/bg.png';

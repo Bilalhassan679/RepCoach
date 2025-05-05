@@ -171,7 +171,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: hp(6),
 
-
   },
   subtitle: {
     fontSize: scale(25),

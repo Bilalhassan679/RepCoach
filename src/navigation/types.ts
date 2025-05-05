@@ -11,10 +11,17 @@ export type RootStackParamList = {
   WorkoutDuration: undefined;
   ExerciseFrequency: undefined;
 
+  // After Step 2
+  GoalsAndProgramInterest: undefined;
+  InjuryHistory: undefined;
+  Surgeries: undefined;
+  DiseasesHealthIssues: undefined;
+  BodyFatLossGoals: undefined;
+  BodyWeightGoals: undefined;
   // After Step 3
+  PhysicalAssessment: undefined;
   HeartRateAssessment: undefined;
   LiftingAssessment: undefined;
-  PhysicalAssessment: undefined;
 
   // After Step 4
   DataReview: undefined;

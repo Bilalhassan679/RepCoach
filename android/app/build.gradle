@@ -59,6 +59,7 @@ react {
  */
 def enableProguardInReleaseBuilds = false
 
+
 /**
  * The preferred build flavor of JavaScriptCore (JSC)
  *
@@ -117,3 +118,7 @@ dependencies {
         implementation jscFlavor
     }
 }
+
+
+// Apply the fonts.gradle file to the project
+apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle")

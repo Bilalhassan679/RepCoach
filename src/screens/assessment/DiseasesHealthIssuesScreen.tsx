@@ -3,75 +3,73 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity,
   SafeAreaView,
+  TouchableOpacity,
   TextInput,
-  Image,
-  Alert,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/types';
 import { hp, wp } from '../../theme/responsive';
 import { scale } from '../../theme/typography';
-import { colors } from '../../theme/colors';
 import { typography } from '../../theme/typography';
-import { document } from '../../assets';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icon from 'react-native-vector-icons/Ionicons';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'GymEquipment'>;
+type Props = NativeStackScreenProps<RootStackParamList, 'DiseasesHealthIssues'>;
 
-const MAX_EQUIPMENT = 10;
-
-const GymEquipmentScreen: React.FC<Props> = ({ navigation }) => {
-  const [equipment, setEquipment] = useState<{ label: string }[]>([]);
+const DiseasesHealthIssuesScreen: React.FC<Props> = ({ navigation }) => {
+  const [diseases, setDiseases] = useState<{ label: string }[]>([]);
   const [inputValue, setInputValue] = useState('');
 
   const handleContinue = () => {
-    navigation.navigate('EmploymentType');
+    navigation.navigate('BodyFatLossGoals');
   };
 
   const handleAddTag = () => {
     const trimmed = inputValue.trim();
     if (
       trimmed.length > 0 &&
-      !equipment.some(e => e.label.toLowerCase() === trimmed.toLowerCase()) &&
-      equipment.length < 10
+      !diseases.some(d => d.label.toLowerCase() === trimmed.toLowerCase()) &&
+      diseases.length < 10
     ) {
-      setEquipment([...equipment, { label: trimmed }]);
+      setDiseases([...diseases, { label: trimmed }]);
       setInputValue('');
     }
   };
 
   const handleDeleteTag = (label: string) => {
-    setEquipment(equipment.filter(tag => tag.label !== label));
+    setDiseases(diseases.filter(tag => tag.label !== label));
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
-        <View style={styles.stepIndicator}>   
-          <Text style={styles.stepText}>Step 1/5</Text>
-          <Text style={styles.progressText}>3 of 6</Text>
+      <View style={styles.header}>
+        <View style={styles.stepContainer}>
+          <Text style={styles.stepText}>Step 2/5</Text>
+          <Text style={styles.progressText}>4 of 6</Text>
         </View>
-        <Text style={styles.title}>Gym Equipment</Text>
-
+        <View style={styles.progressBarContainer}>
+          <View style={[styles.progressFill, { width: '66%' }]} />
+        </View>
+      </View>
+      <View style={{paddingHorizontal: wp(5)}}>
+        <Text style={styles.title}>Diseases/{"\n"}Health Issues</Text>
         <View style={styles.tagsBox}>
           <View style={styles.tagsRow}>
-            {equipment.map((e, i) => (
+            {diseases.map((d, i) => (
               <TouchableOpacity
-                key={e.label}
+                key={d.label}
                 style={styles.tag}
-                onLongPress={() => handleDeleteTag(e.label)}
+                onLongPress={() => handleDeleteTag(d.label)}
                 delayLongPress={300}
               >
-                <Text style={styles.tagText}>{e.label}</Text>
+                <Text style={styles.tagText}>{d.label}</Text>
               </TouchableOpacity>
             ))}
             <TextInput
               style={styles.tagInput}
               value={inputValue}
               onChangeText={setInputValue}
-              placeholder="Add equipment"
+              placeholder="Add disease/issue"
               placeholderTextColor="#BDBDBD"
               onSubmitEditing={handleAddTag}
               blurOnSubmit={false}
@@ -80,11 +78,10 @@ const GymEquipmentScreen: React.FC<Props> = ({ navigation }) => {
             />
           </View>
           <View style={styles.counterRow}>
-            <Icon name="clipboard-text-outline" size={16} color="#BDBDBD" />
-            <Text style={styles.counterText}>{equipment.length}/10</Text>
+            <Icon name="document-text" size={16} color="#BDBDBD" />
+            <Text style={styles.counterText}>{diseases.length}/10</Text>
           </View>
         </View>
-
         <TouchableOpacity style={styles.button} onPress={handleContinue}>
           <Text style={styles.buttonText}>Continue</Text>
         </TouchableOpacity>
@@ -96,43 +93,56 @@ const GymEquipmentScreen: React.FC<Props> = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: '#FFF',
   },
-  content: {
-    flex: 1,
-    padding: 20,
+  header: {
+    paddingTop: hp(1),
+    paddingHorizontal: wp(5),
+    marginBottom: hp(2),
+  },
+  stepContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: hp(1),
   },
   stepText: {
     fontSize: scale(16),
-    color: 'rgba(17, 18, 20, 1)',
+    color: '#111214',
     fontFamily: typography.fontFamily.WorkSansSemiBold,
   },
   progressText: {
     fontSize: scale(14),
-    color: colors.primary.main,
+    color: '#FF0000',
     backgroundColor: 'rgba(239, 0, 0, 0.05)',
-    paddingHorizontal: hp('1.5'),
-    paddingVertical: hp('1'),
+    paddingHorizontal: hp(1.5),
+    paddingVertical: hp(1),
     borderRadius: 12,
     fontFamily: typography.fontFamily.WorkSansSemiBold,
-  },  
-  stepIndicator: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 16,
+  },
+  progressBarContainer: {
+    height: hp(0.6),
+    backgroundColor: '#FFE5E5',
+    borderRadius: hp(0.3),
+    overflow: 'hidden',
+  },
+  progressFill: {
+    height: '100%',
+    backgroundColor: '#FF0000',
+    borderRadius: hp(0.3),
   },
   title: {
-    fontSize: scale(30),
-    marginBottom: 32,
-    textAlign: 'center',
-    color: colors.text,
+    fontSize: scale(24),
+    color: '#111214',
     fontFamily: typography.fontFamily.WorkSansBold,
+    textAlign: 'center',
+    marginBottom: hp(2),
+    marginTop: hp(2),
   },
   tagsBox: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FFF',
     borderWidth: 1,
-    borderColor: '#E0E0E0',
+    borderColor: '#E5E5E5',
     borderRadius: 12,
     minHeight: hp(18),
     padding: wp(3),
@@ -181,7 +191,7 @@ const styles = StyleSheet.create({
     marginBottom: hp(4),
   },
   buttonText: {
-    color: '#FFFFFF',
+    color: '#FFF',
     fontSize: scale(16),
     fontFamily: typography.fontFamily.WorkSansSemiBold,
   },
@@ -199,11 +209,6 @@ const styles = StyleSheet.create({
     marginBottom: hp(1),
     backgroundColor: '#FFF',
   },
-  icon: {
-    width: wp(6),
-    height: wp(6),
-    resizeMode: 'contain',
-  },
 });
 
-export default GymEquipmentScreen; 
+export default DiseasesHealthIssuesScreen; 

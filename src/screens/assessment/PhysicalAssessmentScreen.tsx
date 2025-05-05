@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
   Image,
+  ScrollView,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/types';
@@ -14,9 +15,16 @@ import { scale } from '../../theme/typography';
 import { typography } from '../../theme/typography';
 import RangeSlider from 'crn-range-slider';
 import Slider from '@react-native-community/slider';
-import { poststretchbg } from '../../assets';
+import { poststretchbg, redline } from '../../assets';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'PhysicalAssessment'>;
+
+// Ruler config for Post-stretch score
+const POST_MIN = 10;
+const POST_MAX = 60;
+const POST_STEP = 5;
+const POST_MINOR_TICKS = 4;
+const POST_RULER_VALUES = Array.from({ length: (POST_MAX - POST_MIN) / POST_STEP + 1 }, (_, i) => POST_MIN + i * POST_STEP);
 
 const PhysicalAssessmentScreen: React.FC<Props> = ({ navigation }) => {
   const [stretchScore, setStretchScore] = useState(7);
@@ -139,24 +147,53 @@ const PhysicalAssessmentScreen: React.FC<Props> = ({ navigation }) => {
         <View style={styles.section}>
           <Text style={styles.label}>Post-Stretch Score</Text>
           <View style={styles.postStretchContainer}>
-        
-            {/* <View style={styles.postStretchSliderContainer}>
-              <RangeSlider
-                style={styles.postStretchSlider}
-                min={10}
-                max={60}
-                step={5}
-                floatingLabel={false}
-                renderThumb={renderPostStretchThumb}
-                renderRail={renderPostStretchRail}
-                renderRailSelected={renderPostStretchRailSelected}
-                low={postStretchScore}
-                high={60}
-                disableRange={true}
-                onValueChanged={(low) => setPostStretchScore(Math.round(low))}
-              />
-            </View> */}
-            <Image source={poststretchbg} style={styles.postStretchSlider} />
+            <View style={styles.rulerBg}>
+              <View style={styles.rulerContainerOuter}>
+                
+                <ScrollView
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={styles.rulerScrollContent}
+                  snapToInterval={wp(8) + (POST_MINOR_TICKS * (wp(8) / (POST_MINOR_TICKS + 1)))}
+                  decelerationRate="fast"
+                >
+                  {/* Left spacer */}
+                  <View style={{ width: wp(40) }} />
+                  {POST_RULER_VALUES.map((val, idx) => (
+                    <React.Fragment key={val}>
+                      <TouchableOpacity
+                        style={styles.rulerMarkWrap}
+                        onPress={() => setPostStretchScore(val)}
+                        activeOpacity={0.7}
+                      >
+                        <View style={[styles.rulerMark, val === postStretchScore && styles.rulerMarkActive]} />
+                        {val === postStretchScore && (
+                      <Image
+                        source={redline}
+                        style={{
+                          width: wp('10'),
+                          height: hp('10'),
+                          resizeMode: 'contain',
+                        }}
+                      />
+                    )}
+                      { val !== postStretchScore && <Text style={[styles.rulerValue, val === postStretchScore && styles.rulerValueActive]}>{val}</Text>}
+                      </TouchableOpacity>
+                      {/* Minor ticks */}
+                      {idx < POST_RULER_VALUES.length - 1 && (
+                        <View style={styles.minorTicksWrap}>
+                          {Array.from({ length: POST_MINOR_TICKS }, (_, i) => (
+                            <View key={i} style={styles.minorTick} />
+                          ))}
+                        </View>
+                      )}
+                    </React.Fragment>
+                  ))}
+                  {/* Right spacer */}
+                  <View style={{ width: wp(40) }} />
+                </ScrollView>
+              </View>
+            </View>
             <Text style={styles.postStretchValue}>{postStretchScore}</Text>
             <Text style={styles.postStretchLabel}>seconds</Text>
           </View>
@@ -372,6 +409,63 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: scale(16),
     fontFamily: typography.fontFamily.WorkSansSemiBold,
+  },
+  rulerBg: {
+    width: '100%',
+    height: hp(10),
+    marginVertical: hp(2),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  rulerContainerOuter: {
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'relative',
+  },
+  rulerScrollContent: {
+    alignItems: 'flex-end',
+  },
+  rulerMarkWrap: {
+    alignItems: 'center',
+    width: wp(8),
+
+  },
+  rulerMark: {
+    width: wp('1'),
+    height: hp(6),
+    backgroundColor: 'rgba(186, 187, 190, 1)',
+    marginBottom: 2,
+    borderRadius: 2,
+  },
+  rulerMarkActive: {
+    backgroundColor: '#FF0000',
+    height: hp(5),
+  },
+  rulerValue: {
+    fontSize: scale(14),
+    color: 'rgba(103, 108, 117, 1)',
+    fontFamily: typography.fontFamily.WorkSansSemiBold,
+  },
+  rulerValueActive: {
+    color: '#FF0000',
+    fontFamily: typography.fontFamily.WorkSansBold,
+    fontSize: scale(18),
+  },
+  minorTicksWrap: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    width: wp(2),
+    marginBottom: hp('4'),
+    gap: 3,
+  },
+  minorTick: {
+    width: 1,
+    height: hp(1.5),
+    backgroundColor: '#C4C4C4',
+    marginHorizontal: wp(0.5),
+    borderRadius: 1,
   },
 });
 

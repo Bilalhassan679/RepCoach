@@ -24,6 +24,7 @@ import { hp, wp } from '../../theme/responsive';
 import { colors } from '../../theme/colors';
 import { scale, typography } from '../../theme/typography';
 import { dragdays, dragmonth } from '../../assets';
+// import dragmonthImage from '../../assets/images/dragmonth.png'; // Adjust path as needed
 type Props = NativeStackScreenProps<RootStackParamList, 'ExerciseFrequency'>;
 
 const { width } = Dimensions.get('window');
