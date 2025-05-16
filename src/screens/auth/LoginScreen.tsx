@@ -176,6 +176,11 @@ const LoginScreen = ({ navigation }: any) => {
           </TouchableOpacity>
         </View>
       </View>
+      {loading && (
+        <View style={styles.loaderOverlay}>
+          <ActivityIndicator size="large" color={colors.primary.main} />
+        </View>
+      )}
     </View>
   );
 };
@@ -272,6 +277,7 @@ const styles = StyleSheet.create({
   socialIcon: {
     width: wp('6'),
     height: wp('6'),
+    resizeMode: 'contain',
   },
   footer: {
     alignItems: 'center',
@@ -296,6 +302,13 @@ const styles = StyleSheet.create({
     fontFamily: typography.fontFamily.WorkSansRegular,
     textDecorationLine: 'underline',
 
+  },
+  loaderOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0,0,0,0.2)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 10,
   },
 });
 

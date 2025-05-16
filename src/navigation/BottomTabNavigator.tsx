@@ -1,13 +1,13 @@
 import React, {useRef} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {View, Text, Image, StyleSheet, Platform} from 'react-native';
-import HomeScreen from '../screens/HomeScreen';
 import SettingsScreen from '../screens/SettingScreen';
 import { home, homeFill, heart, heartFill, setting, settingFill, category,categoryFill ,explore ,exploreFill} from '../assets';
 import { CustomHeader } from './RootNavigator';
 import WishListScreen from '../screens/WishList';
 import CategoriesScreen from '../screens/Categories';
 import ExploreScreen from '../screens/ExploreScreen';
+import HomeScreen from '../screens/HomeScreen';
 const Tab = createBottomTabNavigator();
 
 const tabarComponent = (

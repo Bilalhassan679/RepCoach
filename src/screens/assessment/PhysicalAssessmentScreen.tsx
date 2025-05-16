@@ -15,7 +15,7 @@ import { scale } from '../../theme/typography';
 import { typography } from '../../theme/typography';
 import RangeSlider from 'crn-range-slider';
 import Slider from '@react-native-community/slider';
-import { poststretchbg, redline } from '../../assets';
+import { redline } from '../../assets';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'PhysicalAssessment'>;
 
@@ -158,7 +158,6 @@ const PhysicalAssessmentScreen: React.FC<Props> = ({ navigation }) => {
                   decelerationRate="fast"
                 >
                   {/* Left spacer */}
-                  <View style={{ width: wp(40) }} />
                   {POST_RULER_VALUES.map((val, idx) => (
                     <React.Fragment key={val}>
                       <TouchableOpacity
@@ -190,7 +189,6 @@ const PhysicalAssessmentScreen: React.FC<Props> = ({ navigation }) => {
                     </React.Fragment>
                   ))}
                   {/* Right spacer */}
-                  <View style={{ width: wp(40) }} />
                 </ScrollView>
               </View>
             </View>

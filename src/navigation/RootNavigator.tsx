@@ -10,9 +10,8 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import HomeScreen from '../screens/HomeScreen';
-import {headerBg} from '../assets';
 import {typography} from '../theme/typography';
+import HomeScreen from '../screens/HomeScreen';
 import {scale} from '../theme/typography';
 import {hp} from '../theme/responsive';
 import ProfileScreen from '../screens/ProfileScreen';
@@ -44,6 +43,7 @@ import SurgeriesScreen from '../screens/assessment/SurgeriesScreen';
 import DiseasesHealthIssuesScreen from '../screens/assessment/DiseasesHealthIssuesScreen';
 import BodyFatLossGoalsScreen from '../screens/assessment/BodyFatLossGoalsScreen';
 import BodyWeightGoalsScreen from '../screens/assessment/BodyWeightGoalsScreen';
+import { headerBg } from '../assets';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -84,12 +84,8 @@ const RootNavigator = () => {
         headerShown: false,
       }}>
       {!isAuthenticated ? (
-           <Stack.Screen 
-           name="ExerciseFrequency" 
-           component={ExerciseFrequencyScreen} 
-         />
-        // Auth Stack
-        // <Stack.Screen name="Auth" component={AuthNavigator} />
+        // Auth Stack 
+        <Stack.Screen name="Auth" component={AuthNavigator} />
       ) : !isAssessmentCompleted ? (
         // Assessment Flow
         <Stack.Group>
@@ -97,6 +93,10 @@ const RootNavigator = () => {
             name="GoalsAndProgramInterest" 
             component={GoalsAndProgramInterestScreen} 
           />
+            <Stack.Screen 
+           name="ExerciseFrequency" 
+           component={ExerciseFrequencyScreen} 
+         />
           <Stack.Screen 
             name="InjuryHistory" 
             component={InjuryHistoryScreen} 
@@ -129,6 +129,8 @@ const RootNavigator = () => {
             name="LiftingAssessment" 
             component={LiftingAssessmentScreen} 
           />
+         <Stack.Screen name="WorkoutDurationScreen" component={WorkoutDurationScreen} />
+
           <Stack.Screen 
             name="DataReview" 
             component={DataReview} 

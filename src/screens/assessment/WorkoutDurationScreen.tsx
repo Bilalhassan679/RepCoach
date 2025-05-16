@@ -6,131 +6,105 @@ import {
   TouchableOpacity,
   SafeAreaView,
   Dimensions,
-  Image,
 } from 'react-native';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/types';
-import Svg, { Path, Circle } from 'react-native-svg';
-import { PanGestureHandler } from 'react-native-gesture-handler';
-import Animated, {
-  useAnimatedGestureHandler,
-  useAnimatedStyle,
-  useSharedValue,
-  withSpring,
-  runOnJS,
-} from 'react-native-reanimated';
-import { useAuth } from '../../context/AuthContext';
-import StepIndicator from '../../components/StepIndicator';
 import { colors } from '../../theme/colors';
-import { typography } from '../../theme/typography';
-import { scale } from '../../theme/typography';
-import { hp, wp } from '../../theme/responsive';
-import { dragdays, dragmonth } from '../../assets';
+import { wp } from '../../theme/responsive';
+import { scale, typography } from '../../theme/typography';
+import Svg, { Line, Circle } from 'react-native-svg';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'WorkoutDuration'>;
+const DURATION_OPTIONS = [ 60, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55,];
+const CIRCLE_SIZE = wp('80');
+const CENTER = CIRCLE_SIZE / 2;
+const RADIUS = CIRCLE_SIZE / 2 - 32;
 
-const { width } = Dimensions.get('window');
-const CIRCLE_RADIUS = width * 0.35;
-const KNOB_SIZE = 40;
-const MIN_DURATION = 15;
-const MAX_DURATION = 120;
-const STEP = 5; // Duration will increment/decrement by 5 minutes
+const getAngle = (index: number, total: number) =>
+  (index / total) * 2 * Math.PI - Math.PI / 2;
 
-const WorkoutDurationScreen: React.FC<Props> = ({ navigation }) => {
-  const [duration, setDuration] = useState(45);
-  const rotation = useSharedValue(0);
-  const { completeAssessment } = useAuth();
+// Helper to get x, y for a given angle and radius
+const getXY = (angle: number, radius: number) => ({
+  x: CENTER + Math.cos(angle) * radius,
+  y: CENTER + Math.sin(angle) * radius,
+});
 
-  const calculateDuration = (angle: number) => {
-    const normalizedAngle = ((angle % 360) + 360) % 360;
-    const percentage = normalizedAngle / 360;
-    const range = MAX_DURATION - MIN_DURATION;
-    const rawDuration = MIN_DURATION + (percentage * range);
-    // Round to nearest step
-    return Math.round(rawDuration / STEP) * STEP;
+type Props = {
+  navigation: NativeStackNavigationProp<RootStackParamList, 'WorkoutDurationScreen'>;
+};
+
+const WorkoutDurationScreen = ({ navigation }: Props) => {
+  const [selectedDuration, setSelectedDuration] = useState(45);
+
+  const handleContinue = () => {
+    navigation.navigate('GoalsAndProgramInterest');
   };
 
-  const gestureHandler = useAnimatedGestureHandler({
-    onStart: (_, ctx: any) => {
-      ctx.startRotation = rotation.value;
-    },
-    onActive: (event, ctx) => {
-      const angle = Math.atan2(event.y, event.x) * (180 / Math.PI);
-      rotation.value = ctx.startRotation + angle;
-      const minutes = calculateDuration(rotation.value);
-      runOnJS(setDuration)(minutes);
-    },
-  });
-
-  const knobStyle = useAnimatedStyle(() => {
-    const angle = rotation.value;
-    const x = Math.cos(angle * (Math.PI / 180)) * CIRCLE_RADIUS;
-    const y = Math.sin(angle * (Math.PI / 180)) * CIRCLE_RADIUS;
-    return {
-      transform: [
-        { translateX: x },
-        { translateY: y },
-      ],
-    };
-  });
-
-  // Calculate the progress arc path based on the current duration
-  const getProgressArcPath = () => {
-    const percentage = (duration - MIN_DURATION) / (MAX_DURATION - MIN_DURATION);
-    const angle = percentage * 180; // We're using a half circle (180 degrees)
-    const endX = width / 2 + CIRCLE_RADIUS * Math.cos((angle - 90) * (Math.PI / 180));
-    const endY = width / 2 + CIRCLE_RADIUS * Math.sin((angle - 90) * (Math.PI / 180));
-    return `M ${width / 2} ${width / 2 - CIRCLE_RADIUS} A ${CIRCLE_RADIUS} ${CIRCLE_RADIUS} 0 ${angle > 180 ? 1 : 0} 1 ${endX} ${endY}`;
-  };
-
-  const handleNext = () => {
-    // Mark assessment as complete and navigate to main app
-    completeAssessment();
-    navigation.navigate('MainApp', { screen: 'Home' });
-  };
+  // Find selected index and angle
+  const selectedIndex = DURATION_OPTIONS.indexOf(selectedDuration);
+  const angle = getAngle(selectedIndex, DURATION_OPTIONS.length);
+  const handEnd = getXY(angle, RADIUS);
 
   return (
     <SafeAreaView style={styles.container}>
-        <View style={styles.content}>
-        <View style={styles.stepIndicator}> 
-          <Text style={styles.stepText}>Step 6/6</Text>
+      <View style={styles.content}>
+        {/* Step Indicator */}
+        <View style={styles.stepIndicator}>
+          <Text style={styles.stepText}>Step 1/5</Text>
           <Text style={styles.progressText}>6 of 6</Text>
         </View>
-        <Text style={styles.title}>How long do you typically work out?</Text>
-        <View style={styles.sliderContainer}>
-          {/* <Svg width={width} height={width}>
-            <Circle
-              cx={width / 2}
-              cy={width / 2}
-              r={CIRCLE_RADIUS}
-              stroke={colors.neutral.grey200}
-              strokeWidth={2}
-              fill="none"
-            />
-            <Path
-              d={getProgressArcPath()}
-              stroke={colors.primary.main}
-              strokeWidth={4}
-              fill="none"
-            />
-            <PanGestureHandler onGestureEvent={gestureHandler}>
-              <Animated.View
-                style={[
-                  styles.knob,
-                  knobStyle,
-                  { transform: [{ translateX: width / 2 }, { translateY: width / 2 }] },
-                ]}
-              />
-            </PanGestureHandler>
-          </Svg> */}
-          <Image source={dragdays} style={styles.frequencyImage} />
-          <View style={styles.durationContainer}>
-            <Text style={styles.durationNumber}>{duration}</Text>
-            <Text style={styles.durationLabel}>Minutes</Text>
+        <Text style={styles.title}>Workout Duration</Text>
+        {/* Circular Duration Selector */}
+        <View style={styles.dialContainer}>
+          <View style={[styles.dial, { width: CIRCLE_SIZE, height: CIRCLE_SIZE }]}> 
+            {/* SVG for the red hand */}
+            <View style={StyleSheet.absoluteFill} pointerEvents="none">
+              <Svg width={CIRCLE_SIZE} height={CIRCLE_SIZE}>
+                {/* Red hand */}
+                <Line
+                  x1={CENTER}
+                  y1={CENTER}
+                  x2={handEnd.x}
+                  y2={handEnd.y}
+                  stroke={colors.primary.main}
+                  strokeWidth={4}
+                  strokeLinecap="round"
+                />
+                {/* Center red dot */}
+                <Circle
+                  cx={CENTER}
+                  cy={CENTER}
+                  r={7}
+                  fill={colors.primary.main}
+                />
+              </Svg>
+            </View>
+            {/* Numbers around the dial */}
+            {DURATION_OPTIONS.map((duration, i) => {
+              const ang = getAngle(i, DURATION_OPTIONS.length);
+              const { x, y } = getXY(ang, RADIUS);
+              const isSelected = selectedDuration === duration;
+              return (
+                <TouchableOpacity
+                  key={duration}
+                  style={[styles.dialNumberWrap, { left: x - 18, top: y - 18 }]}
+                  onPress={() => setSelectedDuration(duration)}
+                  activeOpacity={0.8}
+                >
+                  <View style={[styles.dialNumber, isSelected && styles.dialNumberSelected]}>
+                    <Text style={[styles.dialNumberText, isSelected && styles.dialNumberTextSelected]}>{duration}</Text>
+                  </View>
+                </TouchableOpacity>
+              );
+            })}
           </View>
         </View>
-
-        <TouchableOpacity style={styles.button} onPress={handleNext}>
+        {/* Large Number and Label */}
+        <View style={styles.durationContainer}>
+          <Text style={styles.durationNumber}>{selectedDuration}</Text>
+          <Text style={styles.durationLabel}>Minutes</Text>
+        </View>
+        {/* Continue Button */}
+        <TouchableOpacity style={styles.button} onPress={handleContinue}>
           <Text style={styles.buttonText}>Continue</Text>
         </TouchableOpacity>
       </View>
@@ -139,88 +113,87 @@ const WorkoutDurationScreen: React.FC<Props> = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.background.default,
-  },
-  content: {
-    flex: 1,
-    padding: 20,
-  },
+  container: { flex: 1, backgroundColor: colors.neutral.white },
+  content: { flex: 1, padding: 20 },
   stepIndicator: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 16,
-  },  
-  stepText: {
-    fontSize: scale(14),
-    color: colors.primary.main,
     marginBottom: 8,
-    fontFamily: typography.fontFamily.WorkSansSemiBold,
   },
+  stepText: { fontSize: scale(14), color: colors.neutral.black, fontFamily: typography.fontFamily.WorkSansBold },
   progressText: {
     fontSize: scale(14),
     color: colors.primary.main,
     backgroundColor: 'rgba(239, 0, 0, 0.05)',
-    paddingHorizontal: hp('1.5'),
-    paddingVertical: hp('1'),
-    borderRadius: 12,
-    fontFamily: typography.fontFamily.WorkSansSemiBold,
-  },
-  frequencyImage: {
-    width: wp('100'),
-    height: hp('45'),
-    marginTop:hp('5'),
-    resizeMode: 'contain',
-  
-  },
-  
-  title: {
-    fontSize: scale(30),
-    fontWeight: 'bold',
-    color: colors.text,
-    marginBottom: 32,
-    textAlign: 'center',
+    paddingHorizontal: wp('3'),
+    paddingVertical: wp('1.5'),
+    borderRadius: wp('3'),
     fontFamily: typography.fontFamily.WorkSansBold,
   },
-  sliderContainer: {
+  title: {
+    fontSize: scale(28),
+    color: colors.neutral.black,
+    fontFamily: typography.fontFamily.WorkSansBold,
+    textAlign: 'center',
+    marginVertical: 16,
+  },
+  dialContainer: {
+    alignItems: 'center',
+    marginVertical: 16,
+  },
+  dial: {
+    backgroundColor: colors.neutral.black,
+    borderRadius: 999,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 20,
+    position: 'relative',
   },
-  knob: {
-    width: KNOB_SIZE,
-    height: KNOB_SIZE,
-    borderRadius: KNOB_SIZE / 2,
-    backgroundColor: colors.primary.main,
+  dialNumberWrap: {
     position: 'absolute',
-    marginLeft: -KNOB_SIZE / 2,
-    marginTop: -KNOB_SIZE / 2,
+    width: 36,
+    height: 36,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  dialNumber: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+  },
+  dialNumberSelected: {
+    backgroundColor: colors.primary.main,
+  },
+  dialNumberText: {
+    color: colors.neutral.white,
+    fontSize: scale(16),
+    fontFamily: typography.fontFamily.WorkSansBold,
+  },
+  dialNumberTextSelected: {
+    color: colors.neutral.white,
+    fontWeight: 'bold',
   },
   durationContainer: {
-    position: 'absolute',
     alignItems: 'center',
-    right: wp('-2'),
-    bottom: hp('-1'),
-
+    marginVertical: 16,
   },
   durationNumber: {
-    fontSize: scale(150),
-    color: colors.text,
+    fontSize: scale(100),
+    color: colors.neutral.black,
     fontFamily: typography.fontFamily.WorkSansExtraBold,
   },
   durationLabel: {
     fontSize: scale(20),
-    color: colors.text,
+    color: colors.neutral.black,
     fontFamily: typography.fontFamily.WorkSansBold,
-    textAlign:'right',
-    backgroundColor:'red',
   },
   button: {
-    backgroundColor: colors.primary.main,
-    height: 56,
-    borderRadius: 28,
+    backgroundColor: '#FF0000',
+    height: wp('14'),
+    borderRadius: wp('2'),
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
@@ -229,9 +202,10 @@ const styles = StyleSheet.create({
     right: 20,
   },
   buttonText: {
-    color: colors.primary.contrast,
-    fontSize: 16,
-    fontWeight: '600',
+    color: colors.neutral.white,
+    fontSize: scale(16),
+    fontWeight: '700',
+    fontFamily: typography.fontFamily.WorkSansBold,
   },
 });
 

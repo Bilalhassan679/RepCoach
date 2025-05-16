@@ -16,7 +16,7 @@ import {hp, wp} from '../../theme/responsive';
 import {scale} from '../../theme/typography';
 import {typography} from '../../theme/typography';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {poststretchbg, redline} from '../../assets';
+import {redline} from '../../assets';
 
 // Dummy ruler values for demonstration
 const MIN = 65;
@@ -87,7 +87,6 @@ const BodyWeightGoalsScreen: React.FC<Props> = ({navigation}) => {
               snapToInterval={wp(8) + MINOR_TICKS * (wp(8) / (MINOR_TICKS + 1))}
               decelerationRate="fast">
               {/* Left spacer */}
-              <View style={{width: wp(40)}} />
 
               {RULER_VALUES.map((val, idx) => (
                 <React.Fragment key={val}>
@@ -127,7 +126,6 @@ const BodyWeightGoalsScreen: React.FC<Props> = ({navigation}) => {
                 </React.Fragment>
               ))}
               {/* Right spacer */}
-              <View style={{width: wp(40)}} />
             </ScrollView>
           </View>
         </View>

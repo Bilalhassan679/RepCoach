@@ -16,6 +16,8 @@ export {default as thumbs} from './images/thumbs.png';
 export {default as poststretchbg} from './images/poststretchbg.png';
 export {default as heartrate} from './images/heartrate.png';
 export {default as redline} from './images/redline.png';
+export {default as blackline} from './images/blackline.png';
+export {default as redbtn} from './images/redbtn.png';
 
 //LOGIN IMAGES
 export {default as bg} from './images/bg.png';

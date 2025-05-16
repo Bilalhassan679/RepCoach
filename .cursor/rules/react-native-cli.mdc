@@ -1,0 +1,58 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# 📱 React Native CLI Project Conventions
+
+## 📁 Project Structure
+- All code must reside inside the `src/` directory.
+- Feature-first structure: each screen or domain goes in `src/features/feature-name/`.
+- Shared UI components: `src/components/`
+- Custom hooks: `src/hooks/`
+- Navigation setup: `src/navigation/`
+- Global store: `src/store/`
+- Utilities: `src/utils/`
+
+## 📦 Directory Naming
+- Use **kebab-case** for folders: `user-profile`, `chat-screen`
+- Each feature folder can contain:
+  - `FeatureName.tsx` — Main screen/component
+  - `featureName.styles.ts` — StyleSheet or styled-components
+  - `featureName.hook.ts` — Custom logic
+  - `featureName.slice.ts` — Redux logic if needed
+
+## 🧱 Component Naming
+- Use **PascalCase** for all component files and names: `UserProfile`, `ChatScreen`
+- Use `React.FC<Props>` for all functional components with props.
+- No class components.
+
+## 🧠 TypeScript Rules
+- All files must be `.ts` or `.tsx`.
+- `strict: true` in `tsconfig.json`.
+- No usage of `any`. Use proper interfaces and types.
+- Custom hooks and functions must be strongly typed.
+
+## ⚡ Performance Practices
+- Avoid anonymous functions in `FlatList` or event handlers.
+- Use `React.memo()` for components with static props.
+- Optimize `FlatList` using:
+  - `removeClippedSubviews`
+  - `maxToRenderPerBatch`
+  - `windowSize`
+  - `getItemLayout` (if fixed size items)
+- Minimize `useEffect` and `useState` in render body.
+
+## 🎨 Styling
+- Use either `StyleSheet.create()` or `styled-components` consistently.
+- Style files should be named `featureName.styles.ts`.
+- Use `react-native-fast-image` for performant image rendering.
+- Ensure designs are responsive across screen sizes.
+
+## 🚀 Best Practices
+- Use `React Navigation` with deep linking and proper stack/tab structure.
+<!-- - Use Expo EAS (for Expo-based projects) or fastlane/codepush for CLI OTA. -->
+- Modularize features, keeping logic, styles, and UI in the same folder.
+- Use `@reduxjs/toolkit` or `zustand` for scalable state management.
+
+## ✅ Example Feature Folder: `chat-screen/`

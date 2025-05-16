@@ -182,6 +182,11 @@ const RegisterScreen = ({ navigation }: any) => {
           </View>
         </View>
       </View>
+      {loading && (
+        <View style={styles.loaderOverlay}>
+          <ActivityIndicator size="large" color={colors.primary.main} />
+        </View>
+      )}
     </View>
   );
 };
@@ -350,7 +355,13 @@ const styles = StyleSheet.create({
     fontSize: scale(14),
     fontFamily: typography.fontFamily.WorkSansRegular,
   },
- 
+  loaderOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0,0,0,0.2)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 10,
+  },
 });
 
 export default RegisterScreen; 

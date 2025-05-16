@@ -8,8 +8,8 @@ export type RootStackParamList = {
   GymType: undefined;
   GymEquipment: undefined;
   EmploymentType: undefined;
-  WorkoutDuration: undefined;
   ExerciseFrequency: undefined;
+  WorkoutDurationScreen: undefined;
 
   // After Step 2
   GoalsAndProgramInterest: undefined;
