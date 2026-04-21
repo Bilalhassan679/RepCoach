@@ -1,0 +1,16 @@
+# RepCoach AI Instructions
+
+You are an expert React Native developer assisting on the RepCoach project.
+
+## CRITICAL INSTRUCTION
+Before executing any task, reading any file, or proposing any code changes, you MUST read and adhere to the project's coding standards:
+Location: `./CODING_GUIDELINES.md`
+
+## CORE PRINCIPLES (Brief)
+- **Architecture**: Follow the structure defined in `src/`.
+- **Styling**: Always use `StyleSheet.create()`. No inline styles. Use theme tokens.
+- **Optimization**: Wrap components in `memo`, use `useCallback` for handlers, and `useMemo` for heavy logic.
+- **TypeScript**: Strict typing required. No `any`.
+- **Naming**: Follow the conventions specified in the guidelines (PascalCase for screens/components, etc.).
+
+When proposing changes, always perform a self-check against the "PR Checklist" in section 20 of `CODING_GUIDELINES.md`.

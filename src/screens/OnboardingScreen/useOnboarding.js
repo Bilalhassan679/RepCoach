@@ -3,12 +3,14 @@ import {useCallback, useEffect, useRef, useState} from 'react';
 import {Dimensions} from 'react-native';
 import {isIOS} from '../../theme/responsive';
 import {onboarding1, onboarding2, onboarding3} from '../../assets';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useDispatch} from 'react-redux';
+import {completeOnboarding} from '../../store/slices/onboardingSlice';
 
 const useOnboardingScreen = navigation => {
   const flatListRef = useRef(null);
 
   const [currentIndex, setCurrentIndex] = useState(0);
+  const dispatch = useDispatch();
 
   const onSnapToItem = e => {
     const contentOffsetX = e.nativeEvent.contentOffset.x;
@@ -45,24 +47,8 @@ const useOnboardingScreen = navigation => {
   };
 
   const handleLogin = () => {
+    dispatch(completeOnboarding());
     navigation.navigate('Login');
-  };
-
-  // Check if user has seen onboarding before
-  useEffect(() => {
-    checkOnboardingStatus();
-  }, []);
-
-  const checkOnboardingStatus = async () => {
-    try {
-      const hasSeenOnboarding = await AsyncStorage.getItem('hasSeenOnboarding');
-      if (hasSeenOnboarding === 'true') {
-        // User has seen onboarding before, navigate to appropriate screen
-        navigation.replace('Login'); // or whatever your main/login screen name is
-      }
-    } catch (error) {
-      console.log('Error checking onboarding status:', error);
-    }
   };
 
   // Mark onboarding as completed when user proceeds
@@ -70,6 +56,7 @@ const useOnboardingScreen = navigation => {
   // Modified handleNextWithComplete to use the same safety check
   const handleNextWithComplete = () => {
     if (currentIndex === onboardingData.length - 1) {
+      dispatch(completeOnboarding());
       navigation.navigate('Login'); // or whatever your signup screen name is
       return; // Exit early
     }

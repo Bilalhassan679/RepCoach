@@ -90,6 +90,10 @@ const RootNavigator = () => {
         // Assessment Flow
         <Stack.Group>
           <Stack.Screen 
+            name="InformationGathering" 
+            component={InformationGatheringScreen} 
+          />
+          <Stack.Screen 
             name="GoalsAndProgramInterest" 
             component={GoalsAndProgramInterestScreen} 
           />
@@ -155,10 +159,7 @@ const RootNavigator = () => {
             name="TailoredSolution" 
             component={TailoredSolutionScreen} 
           />
-          <Stack.Screen 
-            name="InformationGathering" 
-            component={InformationGatheringScreen} 
-          />
+          
           <Stack.Screen 
             name="GymType" 
             component={GymTypeScreen} 

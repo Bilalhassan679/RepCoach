@@ -54,7 +54,6 @@ export {default as invoice} from './images/invoice.png';
 export {default as help} from './images/help.png';
 export {default as sms} from './images/sms.png';
 export {default as lock} from './images/lock.png';
-export {default as addgallery} from './images/addgallery.png';
 export {default as eye} from './images/eye.png';
 export {default as eyeoff} from './images/eye.png';
 export {default as dotsvertical} from './images/dotsvertical.png';

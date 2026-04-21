@@ -14,11 +14,14 @@ import { hp } from '../../theme/responsive';
 import { wp } from '../../theme/responsive';
 import { colors } from '../../theme/colors';
 import { typography } from '../../theme';
+import { useAppDispatch } from '../../store';
+import { completeOnboarding } from '../../store/slices/onboardingSlice';
 
 const {width} = Dimensions.get('window');
 
 const WelcomeScreen = () => {
   const navigation = useNavigation<any>();
+  const dispatch = useAppDispatch();
 
   return (
     <View style={styles.container}>
@@ -47,7 +50,10 @@ const WelcomeScreen = () => {
 
             <View style={styles.signInContainer}>
               <Text style={styles.signInText}>Already have account? </Text>
-              <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+              <TouchableOpacity onPress={() => {
+                dispatch(completeOnboarding());
+                navigation.navigate('Login');
+              }}>
                 <Text style={styles.signInLink}>Sign in</Text>
               </TouchableOpacity>
             </View>

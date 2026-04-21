@@ -18,7 +18,7 @@ alwaysApply: true
 - Use **kebab-case** for folders: `user-profile`, `chat-screen`
 - Each feature folder can contain:
   - `FeatureName.tsx` — Main screen/component
-  - `featureName.styles.ts` — StyleSheet or styled-components
+  - `FeatureName.styles.ts` — StyleSheet or styled-components
   - `featureName.hook.ts` — Custom logic
   - `featureName.slice.ts` — Redux logic if needed
 

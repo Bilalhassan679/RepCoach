@@ -7,34 +7,42 @@ export const scale = (size: number) => size / fontScale;
 export const typography = {
   // Font Families
   fontFamily: {
+    // WorkSans-Regular 400
     WorkSansLight: Platform.select({
       ios: 'WorkSans-Light',
       android: 'WorkSans-Light',
     }),
+    // WorkSans-Medium 500
     WorkSansMedium: Platform.select({
       ios: 'WorkSans-Medium',
       android: 'WorkSans-Medium',
     }),
+    // WorkSans-Regular 400
     WorkSansRegular: Platform.select({
       ios: 'WorkSans-Regular',
       android: 'WorkSans-Regular',
     }),
+    // WorkSans-SemiBold 600
     WorkSansSemiBold: Platform.select({
       ios: 'WorkSans-SemiBold',
       android: 'WorkSans-SemiBold',
     }),
+    // WorkSans-Bold 700
     WorkSansBold: Platform.select({
       ios: 'WorkSans-Bold',
       android: 'WorkSans-Bold',
     }),
+    // WorkSans-ExtraBold 800
     WorkSansExtraBold: Platform.select({
       ios: 'WorkSans-ExtraBold',
       android: 'WorkSans-ExtraBold',
     }),
+    // WorkSans-ExtraLight 200
     WorkSansExtraLight: Platform.select({
       ios: 'WorkSans-ExtraLight',
       android: 'WorkSans-ExtraLight',
     }),
+    // WorkSans-Thin 100
     WorkSansThin: Platform.select({
       ios: 'WorkSans-Thin',
       android: 'WorkSans-Thin',

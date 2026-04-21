@@ -1,8 +1,12 @@
 This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
-# Getting Started
+# 📜 Coding Standards & Guidelines
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+> [!IMPORTANT]
+> **Every developer and AI assistant MUST read and follow the [CODING_GUIDELINES.md](./CODING_GUIDELINES.md) before contributing to this project.** 
+> It contains the architectural standards, optimization patterns, and required project structure for RepCoach.
+
+# Getting Started
 
 ## Step 1: Start Metro
 
